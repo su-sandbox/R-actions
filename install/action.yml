@@ -30,9 +30,15 @@ runs:
        if [ ${{ runner.os }} = macOS ]; then
          ARCH=`uname -m`
          echo "Installing R-${{ inputs.r-version }}-$ARCH"
-         $RCURL \
-           "https://mac.r-project.org/high-sierra/last-success/R-${{ inputs.r-version }}-${ARCH}.tar.xz" \
-           | sudo tar fxj - -C /Library/Frameworks/
+         if uname -r | grep ^1 >/dev/null; then ## high-sierra build
+           $RCURL \
+             "https://mac.r-project.org/high-sierra/last-success/R-${{ inputs.r-version }}-${ARCH}.tar.xz" \
+             | sudo tar fxj - -C /Library/Frameworks/
+         else # big-sur
+           $RCURL \
+             "https://mac.r-project.org/big-sur/last-success/R-${{ inputs.r-version }}-${ARCH}.tar.xz" \
+             | sudo tar fxj - -C /Library/Frameworks/
+         fi
          sudo ln -sfn  /Library/Frameworks/R.framework/Resources/bin/R /usr/local/bin/R
          sudo ln -sfn  /Library/Frameworks/R.framework/Resources/bin/Rscript /usr/local/bin/Rscript
          # make sure site-library exists and is writable (unlike R.home itself)
