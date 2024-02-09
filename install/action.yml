@@ -41,6 +41,21 @@ runs:
          fi
          sudo ln -sfn  /Library/Frameworks/R.framework/Resources/bin/R /usr/local/bin/R
          sudo ln -sfn  /Library/Frameworks/R.framework/Resources/bin/Rscript /usr/local/bin/Rscript
+         if [ -e /opt/homebrew/bin/R ]; then
+           echo Removing Homebrew R ...
+           for i in R Rscript; do rm -f /opt/homebrew/bin/$i; done
+         fi
+         if [ ! -e /opt/R ]; then
+           sudo mkdir /opt/R
+           sudo chown $USER /opt/R
+           mkdir -p /opt/R/$ARCH/bin
+           for i in R Rscript; do ln -s /Library/Frameworks/R.framework/Resources/bin/$i /opt/R/$ARCH/bin/$i; done
+         fi
+         # prepend /opt/R to future PATHs
+         echo /opt/R/$ARCH/bin > newPATH
+         cat $GITHUB_PATH >> newPATH
+         cat newPATH > $GITHUB_PATH
+         rm -f newPATH
          # make sure site-library exists and is writable (unlike R.home itself)
          sudo mkdir /Library/Frameworks/R.framework/Resources/site-library
          sudo chown $USER /Library/Frameworks/R.framework/Resources/site-library
