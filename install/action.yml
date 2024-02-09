@@ -84,6 +84,6 @@ runs:
 
    - name: Install Tools
      if: ${{ runner.os == 'Windows' && inputs.tools != 'none' }}
-     uses: s-u/ucrt3/actions/toolchain-install@main
+     uses: kalibera/ucrt3/actions/toolchain-install@main
      with:
        toolchain-type: ${{ inputs.tools }}
