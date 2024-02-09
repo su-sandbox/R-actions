@@ -81,7 +81,7 @@ runs:
      run: |
          # Installation from mac.R-project.org
          echo "::group::Install macOS system dependencies"
-         Rscript -e 'dep="${{ inputs.macos-deps }}"; dep=unlist(strplit(dep, "[, ]+")); source("https://mac.R-project.org/bin/install.R"); install.libs(dep)'
+         Rscript -e 'dep="${{ inputs.macos-deps }}"; dep=unlist(strsplit(dep, "[, ]+")); source("https://mac.R-project.org/bin/install.R"); install.libs(dep)'
          echo ''
          echo '::endgroup::'
      shell: bash
